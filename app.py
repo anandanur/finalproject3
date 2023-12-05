@@ -6,7 +6,7 @@ conn = st.connection("postgresql", type="sql",
                      url="postgresql://anandanurd13:liuoJI0dh8CQ@ep-bitter-credit-99134373.us-east-2.aws.neon.tech/fp3")
 with conn.session as session:
     query = text('CREATE TABLE IF NOT EXISTS orders (id serial, customer_name text, email text, phone_number text, \
-                  address text, product_name text, quantity int, order_date date, order_status text, \
+                  address text, product_name text, quantity text, order_date date, order_status text, \
                   tracking_number text, estimated_arrival_date date);')
     session.execute(query)
 
@@ -20,7 +20,7 @@ if page == "View Data":
 if page == "Edit Data":
     if st.button('Tambah Data'):
         with conn.session as session:
-            query = text('INSERT INTO ORDERS (customer_name, email, phone_number, address, product_name,order_status) \
+            query = text('INSERT INTO ORDERS (customer_name, email, phone_number, address, product_name, quantity, order_date, order_status, tracking_number, estimated_arrival_date ) \
                           VALUES (:1, :2, :3, :4, :5, :6, :7, :8, :9, :10, :11);')
             session.execute(query, {'1':'', '2':'', '3':'', '4':'', '5':'', '6':'', '7':'', '8':None, '9':'', '10':'', '11':None})
             session.commit()
@@ -51,17 +51,17 @@ if page == "Edit Data":
                 order_status_baru = st.text_input("order_status", order_status_lama)
                 tracking_number_baru = st.text_input("tracking_number", tracking_number_lama)
                 estimated_arrival_date_baru = st.date_input ("estimated_arrival_date", estimated_arrival_date_lama)
-                col1, col2 = st.columns([1, 6])
+                col1, col2 = st.columns([1, 11])
 
                 with col1:
                     if st.form_submit_button('UPDATE'):
                         with conn.session as session:
                             query = text('UPDATE orders \
                                           SET customer_name=:1, email=:2, phone_number=:3, address=:4, \
-                                          product_name=:5, quantity=:6, order_date=:7, order_status=:8 \
+                                          product_name=:5, quantity=:6, order_date=:7, order_status=:8, \
                                           tracking_number=:9,estimated_arrival_date=:10\
                                           WHERE id=:11;')
-                            session.execute(query, {'1':customer_name_baru, '2':email_baru, '3':phone_number_baru, '4':address_baru, 
+                            session.execute(query, {'1':customer_name_baru, '2':email_baru, '3':phone_number_baru, '4':address_baru,
                                                     '5':product_name_baru, '6':quantity_baru, '7':order_date_baru, '8':order_status_baru, 
                                                     '9':tracking_number_baru, '10':estimated_arrival_date_baru, '11':id})
                             session.commit()
