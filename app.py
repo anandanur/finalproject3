@@ -10,7 +10,7 @@ with conn.session as session:
                   tracking_number text, estimated_arrival_date date);')
     session.execute(query)
 
-st.header('SIMPLE SHOP DATA MANAGEMENT')
+st.header('SIMPLE SHOP MANAGEMENT')
 page = st.sidebar.selectbox("Pilih Menu", ["View Data","Edit Data"])
 
 if page == "View Data":
